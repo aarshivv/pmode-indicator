@@ -42,6 +42,8 @@ for _ in 1 2 3 4 5; do
   sleep 1
 done
 omarchy plugin enable aarshiv.pmode --section right
+# Hot reload doesn't recreate a widget already on the bar; restart to load new code
+omarchy restart shell >/dev/null 2>&1 || true
 
 echo
 pmode-status
