@@ -1,0 +1,25 @@
+#!/bin/bash
+# Print EVO-X2 EC readings from the read-only pmode_indicator driver.
+#   pmode-status          human-readable
+#   pmode-status --json   one JSON line (used by the bar widget)
+# Only reads sysfs; needs no privileges.
+
+dev=/sys/devices/platform/pmode_indicator
+hwmon=$(dirname "$(grep -lx pmode_indicator /sys/class/hwmon/hwmon*/name 2>/dev/null | head -1)" 2>/dev/null)
+
+mode=$(cat "$dev/power_mode" 2>/dev/null || echo unavailable)
+read_or_dash() { cat "$1" 2>/dev/null || echo -; }
+
+fan1=$(read_or_dash "$hwmon/fan1_input")
+fan2=$(read_or_dash "$hwmon/fan2_input")
+fan3=$(read_or_dash "$hwmon/fan3_input")
+temp=$(read_or_dash "$hwmon/temp1_input")
+[[ $temp =~ ^[0-9]+$ ]] && temp=$((temp / 1000))
+
+if [[ $1 == --json ]]; then
+  printf '{"mode":"%s","fan1":"%s","fan2":"%s","fan3":"%s","temp":"%s"}\n' \
+    "$mode" "$fan1" "$fan2" "$fan3" "$temp"
+else
+  printf 'Power mode : %s\nCPU fan 1  : %s rpm\nCPU fan 2  : %s rpm\nSystem fan : %s rpm\nCPU temp   : %s °C\n' \
+    "$mode" "$fan1" "$fan2" "$fan3" "$temp"
+fi

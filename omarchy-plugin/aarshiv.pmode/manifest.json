@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 1,
+  "id": "aarshiv.pmode",
+  "name": "P-mode",
+  "version": "1.0.0",
+  "author": "aarshiv",
+  "license": "GPL-2.0",
+  "description": "Read-only GMKtec EVO-X2 power mode indicator (set with the physical P-mode button)",
+  "kinds": [
+    "bar-widget"
+  ],
+  "entryPoints": {
+    "barWidget": "BarWidget.qml"
+  },
+  "barWidget": {
+    "displayName": "P-mode",
+    "description": "Shows the EVO-X2 power mode, fan speeds and EC temperature",
+    "category": "System",
+    "allowMultiple": false,
+    "defaultSection": "right"
+  }
+}
