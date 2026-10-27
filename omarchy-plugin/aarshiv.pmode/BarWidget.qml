@@ -24,7 +24,8 @@ BarWidget {
   readonly property string tooltip: mode === "" ? "P-mode: driver not loaded"
     : "P-mode: " + mode + " (" + current.limit + ")\n"
       + "CPU fans: " + info.fan1 + " / " + info.fan2 + " rpm\n"
-      + "System fan: " + info.fan3 + " rpm\n"
+      // The EC keeps the system fan stopped until roughly 70 °C
+      + "System fan: " + (info.fan3 === "0" ? "off (starts ~70 °C)" : info.fan3 + " rpm") + "\n"
       + "EC CPU temp: " + info.temp + " °C\n"
       + "Change with the physical P-mode button"
 
